@@ -38,6 +38,7 @@ public class CountDownLatchExample2 {
         }
       });
     }
+    //等待10毫秒时间 不管其他线程是否执行完毕 本线程继续向下执行,
     countDownLatch.await(10, TimeUnit.MILLISECONDS);
     log.info("finish");
     executorService.shutdown();

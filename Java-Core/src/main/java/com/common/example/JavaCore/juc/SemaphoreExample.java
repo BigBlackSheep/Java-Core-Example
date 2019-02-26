@@ -10,7 +10,8 @@ import java.util.concurrent.Semaphore;
 /**
  * @Auther: Gz.
  * @Date: 2019/2/25 14:36
- * @Description:J.U.C 包下 CountDownLatch使用样例
+ * @Description:J.U.C 包下 信号量使用样例
+ *
  */
 @Slf4j
 public class SemaphoreExample {
@@ -22,11 +23,13 @@ public class SemaphoreExample {
 
     ExecutorService executorService = Executors.newCachedThreadPool();
 
-    //并发数量
+    // 信号量初始化 并发数量 即最大并发就是3
     final Semaphore semaphore = new Semaphore(3);
 
-
-
+    /**
+     * 如果超过并发的数量只能在外面等待
+     * 有释放一个许可的时候 才能再获取下一个许可
+     */
     for(int i=0; i<threadCount;i++){
       final int threadNum = i;
       executorService.execute(()->{

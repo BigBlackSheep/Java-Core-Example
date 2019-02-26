@@ -9,7 +9,7 @@ import java.util.concurrent.Semaphore;
 /**
  * @Auther: Gz.
  * @Date: 2019/2/25 14:36
- * @Description:J.U.C 包下 CountDownLatch使用样例
+ * @Description:J.U.C 包下 信号量使用样例
  */
 @Slf4j
 public class SemaphoreExample2 {
@@ -30,9 +30,8 @@ public class SemaphoreExample2 {
       final int threadNum = i;
       executorService.execute(()->{
         try {
-          //获取一个许可
+          //尝试获取一个许可 如果没有获取到就丢弃 或做其他业务逻辑
           if(semaphore.tryAcquire()){
-
             test(threadNum);
             semaphore.release();//释放一个许可
           }

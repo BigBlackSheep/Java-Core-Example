@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @Auther: Gz.
  * @Date: 2019/2/25 14:36
- * @Description:J.U.C 包下 CountDownLatch使用样例
+ * @Description:J.U.C 包下 信号量使用样例
  */
 @Slf4j
 public class SemaphoreExample3 {
@@ -31,7 +31,7 @@ public class SemaphoreExample3 {
       final int threadNum = i;
       executorService.execute(()->{
         try {
-          //只执行5秒内的 其他的全丢弃
+          //只执行5秒内的 其他的全丢弃获取其他业务逻辑
           if(semaphore.tryAcquire(5000, TimeUnit.MILLISECONDS)){
 
             test(threadNum);
