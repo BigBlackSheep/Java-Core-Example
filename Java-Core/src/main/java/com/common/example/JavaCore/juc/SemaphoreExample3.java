@@ -2,10 +2,10 @@ package com.common.example.JavaCore.juc;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Auther: Gz.
@@ -13,32 +13,36 @@ import java.util.concurrent.Executors;
  * @Description:J.U.C 包下 CountDownLatch使用样例
  */
 @Slf4j
-public class CountDownLatchExample {
+public class SemaphoreExample3 {
 
-  private static final int threadCount = 200;
+  private static final int threadCount = 20;
 
   public static void main(String[] args) throws InterruptedException {
 
 
     ExecutorService executorService = Executors.newCachedThreadPool();
 
-    final CountDownLatch countDownLatch = new CountDownLatch(threadCount);
+    //并发数量
+    final Semaphore semaphore = new Semaphore(3);
+
 
 
     for(int i=0; i<threadCount;i++){
       final int threadNum = i;
       executorService.execute(()->{
         try {
-          test(threadNum);
-          log.info("count:{}",countDownLatch.getCount());
+          //只执行5秒内的 其他的全丢弃
+          if(semaphore.tryAcquire(5000, TimeUnit.MILLISECONDS)){
+
+            test(threadNum);
+            semaphore.release();//释放一个许可
+          } 
         } catch (InterruptedException e) {
           log.error("exception",e);
         }finally {
-          countDownLatch.countDown();
         }
       });
     }
-    countDownLatch.await();
     log.info("finish");
     executorService.shutdown();
 
@@ -46,9 +50,8 @@ public class CountDownLatchExample {
 
 
   private static void test(int threadNum) throws InterruptedException {
-    Thread.sleep(100);
     log.info("{}",threadNum);
-    Thread.sleep(100);
+    Thread.sleep(3000);
   }
 
 

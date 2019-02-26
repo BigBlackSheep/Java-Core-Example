@@ -3,9 +3,9 @@ package com.common.example.JavaCore.juc;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Auther: Gz.
@@ -13,7 +13,7 @@ import java.util.concurrent.Executors;
  * @Description:J.U.C 包下 CountDownLatch使用样例
  */
 @Slf4j
-public class CountDownLatchExample {
+public class CountDownLatchExample2 {
 
   private static final int threadCount = 200;
 
@@ -38,7 +38,7 @@ public class CountDownLatchExample {
         }
       });
     }
-    countDownLatch.await();
+    countDownLatch.await(10, TimeUnit.MILLISECONDS);
     log.info("finish");
     executorService.shutdown();
 
