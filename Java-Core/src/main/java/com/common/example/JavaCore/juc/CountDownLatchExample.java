@@ -15,16 +15,16 @@ import java.util.concurrent.Executors;
 @Slf4j
 public class CountDownLatchExample {
 
-  //
+  //线程数量
   private static final int threadCount = 200;
 
   public static void main(String[] args) throws InterruptedException {
 
-
+    //创建一个线程池
     ExecutorService executorService = Executors.newCachedThreadPool();
 
+    //创建一个CountDownLatch 并且给200个线程数量
     final CountDownLatch countDownLatch = new CountDownLatch(threadCount);
-
 
     for(int i=0; i<threadCount;i++){
       final int threadNum = i;
