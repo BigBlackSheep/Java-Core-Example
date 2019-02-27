@@ -24,16 +24,22 @@ public class CountDownLatchExample2 {
 
     final CountDownLatch countDownLatch = new CountDownLatch(threadCount);
 
-
+    //循环
     for(int i=0; i<threadCount;i++){
+      //给一个线程名称(生产中最好给一个有意义的名称)
       final int threadNum = i;
+      //线程池调用
       executorService.execute(()->{
         try {
+          //业务逻辑方法
           test(threadNum);
           log.info("count:{}",countDownLatch.getCount());
         } catch (InterruptedException e) {
           log.error("exception",e);
         }finally {
+          //执行完业务逻辑一定要执行 countDown方法 来-1
+          //如果未调用则无法执行 下方的await()方法
+          //内部使用CAS算法 调用CPU级别指令 安全高效
           countDownLatch.countDown();
         }
       });
